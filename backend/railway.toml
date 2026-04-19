@@ -3,6 +3,5 @@ builder = "nixpacks"
 
 [deploy]
 startCommand = "npx prisma db push && node src/index.js"
-healthcheckPath = "/api/status"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
