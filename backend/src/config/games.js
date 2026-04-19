@@ -57,7 +57,6 @@ const games = [
     sources: {
       tier_list: [
         { type: 'prydwen', url: 'https://www.prydwen.gg/arknights-endfield/tier-list' },
-        { type: 'game8', url: 'https://game8.co/games/Arknights-Endfield' },
       ],
       guides: [
         { type: 'prydwen', url: 'https://www.prydwen.gg/arknights-endfield/guides' },
