@@ -29,9 +29,9 @@ const games = [
         { type: 'reddit', subreddit: 'ZenlessZoneZero' },
       ],
       videos: [
-        { type: 'youtube', channelId: 'UCKAXF3Hw41HsEHeCRxYe9JQ', name: 'Zenless Zone Zero Official' },
-        { type: 'youtube', channelId: 'UCPnSoX7NkOBcOX0Gfw_yjAw', name: 'Tectone', keywords: ['zzz', 'zenless'] },
-        { type: 'youtube', channelId: 'UCwx3EmL0cr25hXGns68BAJQ', name: 'Vars II', keywords: ['zzz', 'zenless'] },
+        { type: 'youtube', channelId: 'UC2SpC8rL9LaeQriE4YNdyzA', handle: 'ZZZ_Official', name: 'Zenless Zone Zero Official' },
+        { type: 'youtube', channelId: 'UCPnSoX7NkOBcOX0Gfw_yjAw', handle: 'Tectone', name: 'Tectone', keywords: ['zzz', 'zenless'] },
+        { type: 'youtube', channelId: 'UCwx3EmL0cr25hXGns68BAJQ', handle: 'VarsII', name: 'Vars II', keywords: ['zzz', 'zenless'] },
       ],
     },
     sections: [
@@ -72,8 +72,8 @@ const games = [
         { type: 'reddit', subreddit: 'ArknightsEndfield' },
       ],
       videos: [
-        { type: 'youtube', channelId: 'UCnhy93oVU2IRZmcpWm_RifQ', name: 'Arknights Endfield Official' },
-        { type: 'youtube', channelId: 'UCPnSoX7NkOBcOX0Gfw_yjAw', name: 'Tectone', keywords: ['endfield', 'arknights', 'AKE'] },
+        { type: 'youtube', channelId: 'UCowPaVRBzg8CE6K4CB6LJfw', handle: 'arknightsendfieldEN', name: 'Arknights Endfield Official' },
+        { type: 'youtube', channelId: 'UCPnSoX7NkOBcOX0Gfw_yjAw', handle: 'Tectone', name: 'Tectone', keywords: ['endfield', 'arknights', 'AKE'] },
       ],
     },
     sections: [
