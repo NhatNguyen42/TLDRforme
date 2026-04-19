@@ -14,8 +14,18 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(helmet());
+
+// CORS — allow FRONTEND_URL (comma-separated for multiple origins)
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000')
+  .split(',')
+  .map(o => o.trim());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin(origin, cb) {
+    // Allow requests with no origin (server-to-server, health checks)
+    if (!origin) return cb(null, true);
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error('Not allowed by CORS'));
+  },
 }));
 app.use(express.json());
 
