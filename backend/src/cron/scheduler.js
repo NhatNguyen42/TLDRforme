@@ -4,8 +4,8 @@ const { scrapeAll } = require('../services/scrapeManager');
 let isRunning = false;
 
 function startScheduler() {
-  // Scrape every 3 hours
-  cron.schedule('0 */3 * * *', async () => {
+  // Scrape every 12 hours
+  cron.schedule('0 */12 * * *', async () => {
     if (isRunning) {
       console.log('[Scheduler] Scrape already in progress, skipping');
       return;
@@ -28,7 +28,7 @@ function startScheduler() {
     }
   });
 
-  console.log('[Scheduler] Cron job scheduled — scraping every 3 hours');
+  console.log('[Scheduler] Cron job scheduled — scraping every 12 hours');
 
   // Run initial scrape 10 seconds after startup
   setTimeout(async () => {
