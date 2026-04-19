@@ -4,11 +4,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-              <span className="text-white font-bold text-[10px]">TL</span>
-            </div>
+            <img src="/Rossi.png" alt="RossiNew" className="w-7 h-7 rounded-lg object-cover" />
             <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
-              TLDRforme — Gaming News Dashboard
+              RossiNew — Gaming News Dashboard
             </span>
           </div>
 

@@ -80,12 +80,9 @@ export default function Header({ games = [] }) {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">TL</span>
-              </div>
+              <img src="/Rossi.png" alt="RossiNew" className="w-8 h-8 rounded-lg object-cover" />
               <h1 className="text-xl font-display font-bold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                TLDR
-                <span className="text-purple-400">forme</span>
+                Rossi<span className="text-purple-400">New</span>
               </h1>
             </div>
 
