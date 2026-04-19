@@ -1,0 +1,29 @@
+{
+  "name": "tldrforme-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "postinstall": "prisma generate",
+    "db:push": "npx prisma db push",
+    "db:studio": "npx prisma studio",
+    "scrape": "node src/scripts/manualScrape.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "axios": "^1.7.0",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.0",
+    "fast-xml-parser": "^4.3.0",
+    "helmet": "^7.1.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0",
+    "prisma": "^5.7.0"
+  }
+}

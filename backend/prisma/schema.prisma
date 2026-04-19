@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Article {
+  id          String    @id @default(cuid())
+  gameId      String
+  source      String
+  category    String
+  title       String
+  summary     String?
+  url         String
+  imageUrl    String?
+  author      String?
+  region      String?
+  publishedAt DateTime?
+  scrapedAt   DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([url, gameId, category])
+  @@index([gameId, category])
+  @@index([gameId, source])
+  @@index([scrapedAt])
+}
+
+model ScrapeLog {
+  id        String   @id @default(cuid())
+  gameId    String
+  source    String
+  status    String
+  message   String?
+  count     Int      @default(0)
+  duration  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([gameId, source])
+}
