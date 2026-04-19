@@ -7,9 +7,10 @@ export default function CommunityPulse({ pulse, accentColor }) {
 
   return (
     <div
-      className="mt-4 rounded-xl border border-white/5 p-5 relative overflow-hidden"
+      className="mt-4 rounded-xl p-5 relative overflow-hidden"
       style={{
         background: `linear-gradient(135deg, ${accentColor}08 0%, transparent 60%)`,
+        border: '1px solid var(--border-color)',
       }}
     >
       {/* Subtle glow */}
@@ -27,11 +28,11 @@ export default function CommunityPulse({ pulse, accentColor }) {
           >
             Community Pulse
           </span>
-          <span className="text-[10px] text-gray-600 ml-auto">
+          <span className="text-[10px] ml-auto" style={{ color: 'var(--text-dim)' }}>
             AI-generated summary
           </span>
         </div>
-        <p className="text-sm text-gray-300 leading-relaxed">{pulse}</p>
+        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{pulse}</p>
       </div>
     </div>
   );

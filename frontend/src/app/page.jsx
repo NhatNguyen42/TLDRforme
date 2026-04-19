@@ -1,6 +1,7 @@
 import Header from '../components/Header';
 import GameSection from '../components/GameSection';
 import Footer from '../components/Footer';
+import ScrollToTop from '../components/ScrollToTop';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -21,7 +22,7 @@ export default async function Home() {
   const games = await getGames();
 
   return (
-    <main className="min-h-screen bg-[#07070f]">
+    <main className="min-h-screen transition-colors duration-300" style={{ background: 'var(--bg-primary)' }}>
       <Header games={games} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-20">
@@ -33,6 +34,7 @@ export default async function Home() {
       </div>
 
       <Footer />
+      <ScrollToTop />
     </main>
   );
 }

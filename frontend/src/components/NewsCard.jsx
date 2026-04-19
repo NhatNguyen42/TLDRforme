@@ -60,12 +60,11 @@ export default function NewsCard({ item, accentColor }) {
       href={item.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-xl border border-white/5 bg-white/[0.02] overflow-hidden
-        hover:border-white/10 hover:bg-white/[0.04] transition-all duration-200"
+      className="group block card rounded-xl overflow-hidden transition-all duration-200"
     >
       {/* Thumbnail */}
       {item.imageUrl && (
-        <div className="aspect-video bg-gray-900 overflow-hidden">
+        <div className="aspect-video overflow-hidden" style={{ background: 'var(--bg-secondary)' }}>
           <img
             src={item.imageUrl}
             alt=""
@@ -84,26 +83,26 @@ export default function NewsCard({ item, accentColor }) {
         </div>
 
         {/* Title */}
-        <h4 className="font-medium text-sm text-gray-200 group-hover:text-white transition-colors line-clamp-2 leading-snug">
+        <h4 className="font-medium text-sm transition-colors line-clamp-2 leading-snug" style={{ color: 'var(--text-secondary)' }}>
           {item.title}
         </h4>
 
         {/* Summary */}
         {item.summary && (
-          <p className="text-xs text-gray-500 mt-2 line-clamp-3 leading-relaxed">
+          <p className="text-xs mt-2 line-clamp-3 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
             {item.summary}
           </p>
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-white/5">
+        <div className="flex items-center justify-between mt-3 pt-2.5" style={{ borderTop: '1px solid var(--border-color)' }}>
           {item.author && (
-            <span className="text-[11px] text-gray-600 truncate max-w-[60%]">
+            <span className="text-[11px] truncate max-w-[60%]" style={{ color: 'var(--text-dim)' }}>
               {item.author}
             </span>
           )}
           {timeAgo && (
-            <span className="text-[11px] text-gray-600 shrink-0">{timeAgo}</span>
+            <span className="text-[11px] shrink-0" style={{ color: 'var(--text-dim)' }}>{timeAgo}</span>
           )}
         </div>
       </div>

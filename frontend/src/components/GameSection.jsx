@@ -62,9 +62,10 @@ export default function GameSection({ game }) {
     <section id={`game-${game.slug}`} className="scroll-mt-20">
       {/* Banner */}
       <div
-        className="relative h-56 sm:h-64 rounded-2xl overflow-hidden border border-white/5"
+        className="relative h-56 sm:h-64 rounded-2xl overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${game.gradientFrom} 0%, ${game.gradientTo} 100%)`,
+          border: '1px solid var(--border-color)',
         }}
       >
         {/* Background image */}
@@ -111,11 +112,11 @@ export default function GameSection({ game }) {
           <h2 className="text-3xl sm:text-4xl font-display font-bold text-white mb-1">
             {game.name}
           </h2>
-          <p className="text-gray-400 text-sm sm:text-base max-w-xl">
+          <p className="text-gray-300 text-sm sm:text-base max-w-xl">
             {game.description}
           </p>
           {lastUpdated && (
-            <p className="text-gray-600 text-xs mt-3">
+            <p className="text-gray-500 text-xs mt-3">
               Last updated: {lastUpdated}
             </p>
           )}
@@ -134,11 +135,12 @@ export default function GameSection({ game }) {
           Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="h-14 rounded-xl skeleton border border-white/5"
+              className="h-14 rounded-xl skeleton"
+              style={{ border: '1px solid var(--border-color)' }}
             />
           ))
         ) : error ? (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12" style={{ color: 'var(--text-muted)' }}>
             <p>Unable to load data for {game.name}</p>
             <p className="text-xs mt-1">Make sure the backend is running</p>
           </div>

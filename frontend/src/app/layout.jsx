@@ -1,4 +1,5 @@
 import { Inter, Playfair_Display } from 'next/font/google';
+import ThemeProvider from '../components/ThemeProvider';
 import './globals.css';
 
 const inter = Inter({
@@ -21,8 +22,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="antialiased">{children}</body>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`} data-theme="dark" suppressHydrationWarning>
+      <body className="antialiased">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
