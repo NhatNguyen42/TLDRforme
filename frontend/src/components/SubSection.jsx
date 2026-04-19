@@ -16,6 +16,7 @@ import {
 } from '@heroicons/react/24/outline';
 import NewsCard from './NewsCard';
 import TierChart from './TierChart';
+import TeamTierChart from './TeamTierChart';
 
 const ICON_MAP = {
   newspaper: NewspaperIcon,
@@ -40,6 +41,12 @@ export default function SubSection({ section, items = [], accentColor }) {
     ? visibleItems.find(i => i.summary && i.summary.startsWith('{') && i.summary.includes('"tiers"'))
     : null;
   const isTierChart = !!tierChartItem;
+
+  // Check if this is a team tier chart section
+  const teamTierChartItem = section.id === 'team_tier_list'
+    ? visibleItems.find(i => i.summary && i.summary.startsWith('{') && i.summary.includes('"teams"'))
+    : null;
+  const isTeamTierChart = !!teamTierChartItem;
 
   // Listen for global search events from Header
   useEffect(() => {
@@ -95,7 +102,7 @@ export default function SubSection({ section, items = [], accentColor }) {
               {section.label}
             </h3>
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-              {isTierChart
+              {isTierChart || isTeamTierChart
                 ? 'Interactive tier chart'
                 : searchQuery && displayItems.length !== visibleItems.length
                   ? `${displayItems.length} of ${visibleItems.length} item${visibleItems.length !== 1 ? 's' : ''}`
@@ -128,6 +135,8 @@ export default function SubSection({ section, items = [], accentColor }) {
 
               {isTierChart ? (
                 <TierChart tierData={tierChartItem.summary} accentColor={accentColor} />
+              ) : isTeamTierChart ? (
+                <TeamTierChart tierData={teamTierChartItem.summary} accentColor={accentColor} />
               ) : displayItems.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {displayItems.map((item) => (

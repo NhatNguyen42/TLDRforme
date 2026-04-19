@@ -13,6 +13,10 @@ class PrydwenScraper extends BaseScraper {
       const $ = await this.fetchPage(url);
       const articles = [];
 
+      if (url.includes('team-tier-list')) {
+        return this.scrapeTeamTierList($, url);
+      }
+
       if (url.includes('tier-list')) {
         return this.scrapeTierList($, url, gameConfig);
       }
@@ -147,6 +151,89 @@ class PrydwenScraper extends BaseScraper {
     // Store as a single article with tier chart JSON in summary
     articles.push({
       title: 'Character Tier List — Prydwen.gg',
+      url: pageUrl,
+      imageUrl: null,
+      author: 'Prydwen.gg',
+      region: null,
+      publishedAt: new Date(),
+      summary: JSON.stringify(tierData),
+    });
+
+    return articles;
+  }
+
+  scrapeTeamTierList($, pageUrl) {
+    const articles = [];
+    const tierData = { tiers: [], url: pageUrl };
+
+    $('.custom-tier').each((_i, tierEl) => {
+      const $tier = $(tierEl);
+      const ratingText = $tier.find('.tier-rating').first().text().trim();
+      if (!ratingText) return;
+
+      const tierRow = { label: ratingText, teams: [] };
+
+      $tier.find('.single-team').each((_j, teamEl) => {
+        const $team = $(teamEl);
+        const cls = $team.attr('class') || '';
+        const element = cls.replace('single-team', '').trim() || null;
+
+        // Team name is in the first <p> child
+        const teamName = $team.children('p').first().text().trim() || 'Unknown Team';
+
+        // Characters within .team-setup
+        const characters = [];
+        $team.find('.team-setup a[href*="/characters/"]').each((_k, charEl) => {
+          const href = $(charEl).attr('href');
+          if (!href) return;
+
+          let charName = null;
+          let imgSrc = null;
+
+          $(charEl).find('img[alt]').each((_l, imgEl) => {
+            const alt = $(imgEl).attr('alt') || '';
+            const src = $(imgEl).attr('data-src') || $(imgEl).attr('src') || '';
+            const isElementIcon = /^(fire|ice|electric|ether|physical|wind|cryo|heat|imaginary|quantum)$/i.test(alt);
+            const isSvgPlaceholder = src.startsWith('data:image/svg');
+
+            if (!charName && alt.length > 1 && !isElementIcon) {
+              charName = alt;
+            }
+            if (!imgSrc && !isSvgPlaceholder && src.length > 0 && !isElementIcon) {
+              imgSrc = src;
+            }
+          });
+
+          if (!charName) {
+            const slug = href.split('/characters/')[1];
+            if (slug) charName = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+          }
+          if (!charName) return;
+
+          if (imgSrc && !imgSrc.startsWith('http')) {
+            imgSrc = `https://www.prydwen.gg${imgSrc}`;
+          }
+
+          const fullUrl = href.startsWith('http') ? href : `https://www.prydwen.gg${href}`;
+
+          // Deduplicate within team
+          if (!characters.find(c => c.name === charName)) {
+            characters.push({ name: charName, url: fullUrl, imageUrl: imgSrc });
+          }
+        });
+
+        if (characters.length > 0) {
+          tierRow.teams.push({ name: teamName, element, characters });
+        }
+      });
+
+      if (tierRow.teams.length > 0) {
+        tierData.tiers.push(tierRow);
+      }
+    });
+
+    articles.push({
+      title: 'Team Tier List — Prydwen.gg',
       url: pageUrl,
       imageUrl: null,
       author: 'Prydwen.gg',

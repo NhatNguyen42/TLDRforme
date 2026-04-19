@@ -58,6 +58,9 @@ const games = [
       tier_list: [
         { type: 'prydwen', url: 'https://www.prydwen.gg/arknights-endfield/tier-list' },
       ],
+      team_tier_list: [
+        { type: 'prydwen', url: 'https://www.prydwen.gg/arknights-endfield/team-tier-list' },
+      ],
       guides: [
         { type: 'prydwen', url: 'https://www.prydwen.gg/arknights-endfield/guides' },
         { type: 'game8', url: 'https://game8.co/games/Arknights-Endfield' },
@@ -80,6 +83,7 @@ const games = [
       { id: 'news', label: 'Latest News', icon: 'newspaper' },
       { id: 'patch_notes', label: 'Patch Notes', icon: 'document' },
       { id: 'tier_list', label: 'Tier Lists', icon: 'chart-bar' },
+      { id: 'team_tier_list', label: 'Team Tier Lists', icon: 'users' },
       { id: 'guides', label: 'Guides & Builds', icon: 'book-open' },
       { id: 'community_reddit', label: 'Reddit & Forums', icon: 'chat-bubble-left-right' },
       { id: 'videos', label: 'Latest Videos', icon: 'play' },
