@@ -21,8 +21,14 @@ router.get('/games/:gameId/feed', async (req, res) => {
 
   const articles = await prisma.article.findMany({
     where: { gameId: game.id },
-    orderBy: { scrapedAt: 'desc' },
     take: 200,
+  });
+
+  // Sort newest first: prefer publishedAt, fall back to scrapedAt
+  articles.sort((a, b) => {
+    const dateA = a.publishedAt || a.scrapedAt;
+    const dateB = b.publishedAt || b.scrapedAt;
+    return new Date(dateB) - new Date(dateA);
   });
 
   // Group by category
@@ -72,8 +78,13 @@ router.get('/games/:gameId/:category', async (req, res) => {
       gameId: game.id,
       category: req.params.category,
     },
-    orderBy: { scrapedAt: 'desc' },
     take: 50,
+  });
+
+  articles.sort((a, b) => {
+    const dateA = a.publishedAt || a.scrapedAt;
+    const dateB = b.publishedAt || b.scrapedAt;
+    return new Date(dateB) - new Date(dateA);
   });
 
   res.json({ game: game.name, category: req.params.category, articles });
