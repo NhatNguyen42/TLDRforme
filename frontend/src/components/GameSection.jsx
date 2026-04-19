@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import SubSection from './SubSection';
 import CommunityPulse from './CommunityPulse';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
 const BANNER_IMAGES = {
   zzz: '/banners/zzz.png',
   ake: '/banners/ake.png',
@@ -42,7 +40,7 @@ export default function GameSection({ game }) {
     async function load() {
       try {
         const res = await fetch(
-          `${API_URL}/api/games/${encodeURIComponent(game.id)}/feed`,
+          `/api/games/${encodeURIComponent(game.id)}/feed`,
         );
         if (!res.ok) throw new Error('Failed to load');
         const data = await res.json();

@@ -1,14 +1,12 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
 export async function fetchGames() {
-  const res = await fetch(`${API_URL}/api/games`);
+  const res = await fetch(`/api/games`);
   if (!res.ok) throw new Error('Failed to fetch games');
   return res.json();
 }
 
 export async function fetchGameFeed(gameId) {
   const res = await fetch(
-    `${API_URL}/api/games/${encodeURIComponent(gameId)}/feed`,
+    `/api/games/${encodeURIComponent(gameId)}/feed`,
   );
   if (!res.ok) throw new Error('Failed to fetch game feed');
   return res.json();
@@ -16,7 +14,7 @@ export async function fetchGameFeed(gameId) {
 
 export async function fetchCategory(gameId, category) {
   const res = await fetch(
-    `${API_URL}/api/games/${encodeURIComponent(gameId)}/${encodeURIComponent(category)}`,
+    `/api/games/${encodeURIComponent(gameId)}/${encodeURIComponent(category)}`,
   );
   if (!res.ok) throw new Error('Failed to fetch category');
   return res.json();
@@ -24,8 +22,8 @@ export async function fetchCategory(gameId, category) {
 
 export async function triggerScrape(adminKey, gameId = null) {
   const url = gameId
-    ? `${API_URL}/api/scrape/${encodeURIComponent(gameId)}`
-    : `${API_URL}/api/scrape`;
+    ? `/api/scrape/${encodeURIComponent(gameId)}`
+    : `/api/scrape`;
 
   const res = await fetch(url, {
     method: 'POST',
