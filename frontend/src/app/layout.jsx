@@ -15,7 +15,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: 'RossiNew — Your Gaming News Dashboard',
+  title: 'RossiNews — Your Gaming News Dashboard',
   description:
     'Stay updated with news, tier lists, guides, and community discussions for all your favorite games in one place.',
 };
