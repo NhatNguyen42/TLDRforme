@@ -116,6 +116,26 @@ router.post('/scrape/:gameId', async (req, res) => {
   });
 });
 
+// DELETE /api/admin/articles — delete articles by filter (admin protected)
+router.delete('/admin/articles', async (req, res) => {
+  const adminKey = req.headers['x-admin-key'];
+  if (!adminKey || adminKey !== process.env.ADMIN_KEY) {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+
+  const { gameId, source, category } = req.query;
+  if (!gameId) {
+    return res.status(400).json({ error: 'gameId is required' });
+  }
+
+  const where = { gameId };
+  if (source) where.source = source;
+  if (category) where.category = category;
+
+  const result = await prisma.article.deleteMany({ where });
+  res.json({ deleted: result.count });
+});
+
 // GET /api/status — scrape status/logs
 router.get('/status', async (_req, res) => {
   const logs = await prisma.scrapeLog.findMany({
