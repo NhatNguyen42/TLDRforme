@@ -73,7 +73,7 @@ const games = [
       ],
       videos: [
         { type: 'youtube', channelId: 'UCowPaVRBzg8CE6K4CB6LJfw', handle: 'arknightsendfieldEN', name: 'Arknights Endfield Official' },
-        { type: 'youtube', channelId: 'UCPnSoX7NkOBcOX0Gfw_yjAw', handle: 'Tectone', name: 'Tectone', keywords: ['endfield', 'arknights', 'AKE'] },
+        { type: 'youtube', channelId: 'UCPnSoX7NkOBcOX0Gfw_yjAw', handle: 'Tectone', name: 'Tectone', keywords: ['endfield'] },
       ],
     },
     sections: [
