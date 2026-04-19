@@ -15,6 +15,7 @@ import {
   ChatBubbleLeftRightIcon,
 } from '@heroicons/react/24/outline';
 import NewsCard from './NewsCard';
+import TierChart from './TierChart';
 
 const ICON_MAP = {
   newspaper: NewspaperIcon,
@@ -33,6 +34,12 @@ export default function SubSection({ section, items = [], accentColor }) {
   const [searchQuery, setSearchQuery] = useState('');
   const Icon = ICON_MAP[section.icon] || NewspaperIcon;
   const visibleItems = items.filter(i => !i.url?.startsWith('pulse://'));
+
+  // Check if this is a tier chart section (has an item with JSON tier data in summary)
+  const tierChartItem = section.id === 'tier_list'
+    ? visibleItems.find(i => i.summary && i.summary.startsWith('{') && i.summary.includes('"tiers"'))
+    : null;
+  const isTierChart = !!tierChartItem;
 
   // Listen for global search events from Header
   useEffect(() => {
@@ -88,11 +95,13 @@ export default function SubSection({ section, items = [], accentColor }) {
               {section.label}
             </h3>
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-              {searchQuery && displayItems.length !== visibleItems.length
-                ? `${displayItems.length} of ${visibleItems.length} item${visibleItems.length !== 1 ? 's' : ''}`
-                : visibleItems.length > 0
-                  ? `${visibleItems.length} item${visibleItems.length !== 1 ? 's' : ''}`
-                  : 'No data yet'}
+              {isTierChart
+                ? 'Interactive tier chart'
+                : searchQuery && displayItems.length !== visibleItems.length
+                  ? `${displayItems.length} of ${visibleItems.length} item${visibleItems.length !== 1 ? 's' : ''}`
+                  : visibleItems.length > 0
+                    ? `${visibleItems.length} item${visibleItems.length !== 1 ? 's' : ''}`
+                    : 'No data yet'}
             </p>
           </div>
         </div>
@@ -117,7 +126,9 @@ export default function SubSection({ section, items = [], accentColor }) {
             <div className="px-4 sm:px-5 pb-5">
               <div className="divider mb-5" />
 
-              {displayItems.length > 0 ? (
+              {isTierChart ? (
+                <TierChart tierData={tierChartItem.summary} accentColor={accentColor} />
+              ) : displayItems.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {displayItems.map((item) => (
                     <NewsCard

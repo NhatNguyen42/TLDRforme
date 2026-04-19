@@ -73,7 +73,78 @@ class PrydwenScraper extends BaseScraper {
   scrapeTierList($, pageUrl, _gameConfig) {
     const articles = [];
 
-    // Main tier list page link
+    // Build structured tier data from the page
+    const tierData = { tiers: [], roles: [], url: pageUrl };
+
+    // Extract role headers (e.g. "Crit DPS | Anomaly DPS | Support")
+    const headerText = $('.custom-tier-header').text().trim();
+    if (headerText) {
+      tierData.roles = headerText.split(/\s{2,}/).map(r => r.trim()).filter(Boolean);
+    }
+
+    // Extract each tier row
+    $('.custom-tier').each((_i, tierEl) => {
+      const $tier = $(tierEl);
+      const ratingText = $tier.find('.tier-rating').first().text().trim();
+      if (!ratingText) return;
+
+      const tierRow = { label: ratingText, characters: [] };
+
+      // Get characters grouped by role (burst class)
+      $tier.find('.custom-tier-burst').each((_j, burstEl) => {
+        const burstClass = $(burstEl).attr('class') || '';
+        // Extract role from class: "custom-tier-burst dps" -> "dps"
+        const roleMatch = burstClass.replace('custom-tier-burst', '').trim();
+
+        $(burstEl).find('a[href*="/characters/"]').each((_k, charEl) => {
+          const href = $(charEl).attr('href');
+          if (!href) return;
+
+          const $imgs = $(charEl).find('img[alt]');
+          let charName = null;
+          let imgSrc = null;
+
+          $imgs.each((_l, imgEl) => {
+            const alt = $(imgEl).attr('alt') || '';
+            const src = $(imgEl).attr('data-src') || $(imgEl).attr('src') || '';
+            const isElementIcon = /^(fire|ice|electric|ether|physical|wind|imaginary|quantum|honest)$/i.test(alt);
+            const isSvgPlaceholder = src.startsWith('data:image/svg');
+
+            if (!charName && alt.length > 1 && !isElementIcon) {
+              charName = alt;
+            }
+            if (!imgSrc && !isSvgPlaceholder && src.length > 0 && !isElementIcon) {
+              imgSrc = src;
+            }
+          });
+
+          if (!charName) {
+            const slug = href.split('/characters/')[1];
+            if (slug) charName = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+          }
+          if (!charName) return;
+
+          if (imgSrc && !imgSrc.startsWith('http')) {
+            imgSrc = `https://www.prydwen.gg${imgSrc}`;
+          }
+
+          const fullUrl = href.startsWith('http') ? href : `https://www.prydwen.gg${href}`;
+
+          tierRow.characters.push({
+            name: charName,
+            url: fullUrl,
+            imageUrl: imgSrc,
+            role: roleMatch || null,
+          });
+        });
+      });
+
+      if (tierRow.characters.length > 0) {
+        tierData.tiers.push(tierRow);
+      }
+    });
+
+    // Store as a single article with tier chart JSON in summary
     articles.push({
       title: 'Character Tier List — Prydwen.gg',
       url: pageUrl,
@@ -81,71 +152,10 @@ class PrydwenScraper extends BaseScraper {
       author: 'Prydwen.gg',
       region: null,
       publishedAt: new Date(),
-      summary: 'View the latest character tier rankings and meta analysis.',
+      summary: JSON.stringify(tierData),
     });
 
-    // Prydwen uses Gatsby SSR — character links contain <img> with alt=name
-    // and inline scripts. We extract the name from the alt attribute and
-    // build proper image URLs.
-    $('a[href*="/characters/"]').each((_i, el) => {
-      const $el = $(el);
-      const href = $el.attr('href');
-      if (!href) return;
-
-      // Extract char name from the first real img alt attribute
-      const $imgs = $el.find('img[alt]');
-      let charName = null;
-      let imgSrc = null;
-
-      $imgs.each((_j, imgEl) => {
-        const alt = $(imgEl).attr('alt') || '';
-        const src = $(imgEl).attr('data-src') || $(imgEl).attr('src') || '';
-
-        // Skip element/attribute icons (tiny images like "Fire", "Electric", "Physical")
-        const isElementIcon = /^(fire|ice|electric|ether|physical|wind|imaginary|quantum|honest)$/i.test(alt);
-        // Skip SVG placeholders
-        const isSvgPlaceholder = src.startsWith('data:image/svg');
-
-        if (!charName && alt.length > 1 && !isElementIcon) {
-          charName = alt;
-        }
-        if (!imgSrc && !isSvgPlaceholder && src.length > 0 && !isElementIcon) {
-          imgSrc = src;
-        }
-      });
-
-      // Fallback: extract name from URL slug
-      if (!charName) {
-        const slug = href.split('/characters/')[1];
-        if (slug) {
-          charName = slug
-            .replace(/-/g, ' ')
-            .replace(/\b\w/g, c => c.toUpperCase());
-        }
-      }
-
-      if (!charName) return;
-
-      // Make image URL absolute
-      if (imgSrc && !imgSrc.startsWith('http')) {
-        imgSrc = `https://www.prydwen.gg${imgSrc}`;
-      }
-
-      const fullUrl = href.startsWith('http')
-        ? href
-        : `https://www.prydwen.gg${href}`;
-
-      articles.push({
-        title: charName,
-        url: fullUrl,
-        imageUrl: imgSrc,
-        author: 'Prydwen.gg',
-        region: null,
-        publishedAt: null,
-      });
-    });
-
-    return this.deduplicateByUrl(articles).slice(0, 30);
+    return articles;
   }
 
   scrapeGuides($, pageUrl, _gameConfig) {
